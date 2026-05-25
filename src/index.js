@@ -41,7 +41,7 @@ const I18N = {
     message:
       'Si esta herramienta te resulta útil, puedes dar una pequeña contribución. Las apps del ecosistema Closer Click son gratuitas y autohosteadas. ¡Gracias!',
     close: 'Cerrar',
-    defaultLink: 'Apoyar',
+    defaultLink: 'Donar',
     hint: 'Apoya al proyecto',
   },
   en: {
@@ -50,7 +50,7 @@ const I18N = {
     message:
       'If you find this tool useful, you can make a small contribution. The Closer Click ecosystem apps are free and self-hosted. Thank you!',
     close: 'Close',
-    defaultLink: 'Support',
+    defaultLink: 'Donate',
     hint: 'Support the project',
   },
 }
@@ -295,7 +295,7 @@ class CloserClickSupport extends HTMLElement {
   _labelFor(href) {
     try {
       const host = new URL(href).hostname.replace(/^www\./, '')
-      if (host.includes('ko-fi')) return 'Ko-fi'
+      if (host.includes('ko-fi')) return this._t.defaultLink
       if (host.includes('paypal')) return 'PayPal'
       if (host.includes('patreon')) return 'Patreon'
       if (host.includes('github')) return 'GitHub Sponsors'
