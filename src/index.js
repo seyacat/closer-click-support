@@ -90,8 +90,8 @@ const STYLE = `
     right: 14px;
     z-index: 2147483000;
     padding: 0;
-    width: 52px;
-    height: 52px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     background: transparent;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
@@ -111,14 +111,14 @@ const STYLE = `
     pointer-events: none;
   }
   @media (max-width: 480px) {
-    .trigger.coin { width: 44px; height: 44px; top: 10px; right: 10px; }
+    .trigger.coin { width: 22px; height: 22px; top: 10px; right: 10px; }
   }
 
   /* Burbuja de diálogo que apunta a la moneda (aparece sola al cargar) */
   .bubble {
     position: fixed;
-    top: 22px;
-    right: 78px;
+    top: 48px;
+    right: 14px;
     z-index: 2147483000;
     background: #3498db;
     color: #fff;
@@ -129,8 +129,8 @@ const STYLE = `
     white-space: nowrap;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
     opacity: 0;
-    transform: translateX(10px) scale(0.96);
-    transform-origin: right center;
+    transform: translateY(-8px) scale(0.96);
+    transform-origin: top right;
     transition: opacity 0.3s ease, transform 0.3s ease;
     pointer-events: none;
     cursor: pointer;
@@ -139,15 +139,15 @@ const STYLE = `
   .bubble::after {
     content: '';
     position: absolute;
-    top: 50%;
-    right: -6px;
-    transform: translateY(-50%);
+    top: -6px;
+    right: 7px;
     border: 6px solid transparent;
-    border-right: 0;
-    border-left-color: #3498db;
+    border-top: 0;
+    border-bottom-color: #3498db;
   }
   @media (max-width: 480px) {
-    .bubble { top: 16px; right: 62px; font-size: 0.8rem; padding: 0.4rem 0.7rem; }
+    .bubble { top: 40px; right: 10px; font-size: 0.8rem; padding: 0.4rem 0.7rem; }
+    .bubble::after { right: 5px; }
   }
 
   .overlay {
