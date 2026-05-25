@@ -90,8 +90,8 @@ const STYLE = `
     right: 14px;
     z-index: 2147483000;
     padding: 0;
-    width: 26px;
-    height: 26px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     background: transparent;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
@@ -111,13 +111,13 @@ const STYLE = `
     pointer-events: none;
   }
   @media (max-width: 480px) {
-    .trigger.coin { width: 22px; height: 22px; top: 10px; right: 10px; }
+    .trigger.coin { width: 32px; height: 32px; top: 10px; right: 10px; }
   }
 
   /* Burbuja de diálogo que apunta a la moneda (aparece sola al cargar) */
   .bubble {
     position: fixed;
-    top: 48px;
+    top: 60px;
     right: 14px;
     z-index: 2147483000;
     background: #3498db;
@@ -146,7 +146,7 @@ const STYLE = `
     border-bottom-color: #3498db;
   }
   @media (max-width: 480px) {
-    .bubble { top: 40px; right: 10px; font-size: 0.8rem; padding: 0.4rem 0.7rem; }
+    .bubble { top: 50px; right: 10px; font-size: 0.8rem; padding: 0.4rem 0.7rem; }
     .bubble::after { right: 5px; }
   }
 
