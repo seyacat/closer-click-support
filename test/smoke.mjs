@@ -114,6 +114,17 @@ results.bubbleHidesOnOpen = await page.evaluate(() => {
   el.close()
   return hidden
 })
+// la burbuja se va con blur de la ventana
+results.bubbleHidesOnBlur = await page.evaluate(async () => {
+  const el = document.querySelector('#coin')
+  el._bubbleAutoShown = false
+  el._render()
+  await new Promise((r) => setTimeout(r, 850))
+  const shown = el.shadowRoot.querySelector('.bubble').classList.contains('show')
+  window.dispatchEvent(new Event('blur'))
+  const hiddenAfter = !el.shadowRoot.querySelector('.bubble').classList.contains('show')
+  return shown && hiddenAfter
+})
 
 // 8. evento cc-support-open
 results.eventFired = await page.evaluate(
@@ -146,6 +157,7 @@ const expect = {
   bubbleText: 'Apoya el Proyecto',
   bubbleAutoShown: true,
   bubbleHidesOnOpen: true,
+  bubbleHidesOnBlur: true,
   eventFired: true,
 }
 

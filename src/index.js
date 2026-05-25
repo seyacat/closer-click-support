@@ -227,6 +227,7 @@ class CloserClickSupport extends HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
     this._onKeydown = this._onKeydown.bind(this)
+    this._onBlur = () => this._hideBubble()
     this._bubbleTimers = []
     this._bubbleAutoShown = false
     this._bubbleVisible = false
@@ -238,6 +239,7 @@ class CloserClickSupport extends HTMLElement {
 
   disconnectedCallback() {
     document.removeEventListener('keydown', this._onKeydown)
+    window.removeEventListener('blur', this._onBlur)
     this._bubbleTimers.forEach(clearTimeout)
     this._bubbleTimers = []
   }
@@ -388,6 +390,8 @@ class CloserClickSupport extends HTMLElement {
           setTimeout(() => {
             this._bubbleVisible = true
             bubble.classList.add('show')
+            // Se va si la ventana/página pierde el foco (blur).
+            window.addEventListener('blur', this._onBlur)
           }, 700),
           setTimeout(() => this._hideBubble(), 700 + hideAfter),
         )
@@ -399,6 +403,7 @@ class CloserClickSupport extends HTMLElement {
 
   _hideBubble() {
     this._bubbleVisible = false
+    window.removeEventListener('blur', this._onBlur)
     const bubble = this.shadowRoot.querySelector('.bubble')
     if (bubble) bubble.classList.remove('show')
   }
