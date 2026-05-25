@@ -56,7 +56,21 @@ const I18N = {
 }
 
 const STYLE = `
-  :host { all: initial; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+  :host {
+    all: initial;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    line-height: 0;
+  }
+  /* Modo flotante opcional (apps sin barra superior): :host([floating]) */
+  :host([floating]) {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 2147483000;
+  }
   * { box-sizing: border-box; }
 
   .trigger {
@@ -83,12 +97,9 @@ const STYLE = `
   }
   .trigger.ghost:hover { border-color: currentColor; }
 
-  /* Moneda flotante: arriba a la derecha de cualquier app */
+  /* Moneda: elemento integrado (no flotante). La app la ubica arriba a la derecha. */
   .trigger.coin {
-    position: fixed;
-    top: 14px;
-    right: 14px;
-    z-index: 2147483000;
+    display: block;
     padding: 0;
     width: 38px;
     height: 38px;
@@ -111,20 +122,21 @@ const STYLE = `
     pointer-events: none;
   }
   @media (max-width: 480px) {
-    .trigger.coin { width: 32px; height: 32px; top: 10px; right: 10px; }
+    .trigger.coin { width: 32px; height: 32px; }
   }
 
-  /* Burbuja de diálogo que apunta a la moneda (aparece sola al cargar) */
+  /* Burbuja: posicionada respecto a la moneda (debajo, extendida a la izquierda) */
   .bubble {
-    position: fixed;
-    top: 60px;
-    right: 14px;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
     z-index: 2147483000;
     background: #3498db;
     color: #fff;
     padding: 0.5rem 0.85rem;
     border-radius: 10px;
     font-size: 0.85rem;
+    line-height: 1.2;
     font-weight: 600;
     white-space: nowrap;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
@@ -140,14 +152,14 @@ const STYLE = `
     content: '';
     position: absolute;
     top: -6px;
-    right: 7px;
+    right: 13px;
     border: 6px solid transparent;
     border-top: 0;
     border-bottom-color: #3498db;
   }
   @media (max-width: 480px) {
-    .bubble { top: 50px; right: 10px; font-size: 0.8rem; padding: 0.4rem 0.7rem; }
-    .bubble::after { right: 5px; }
+    .bubble { font-size: 0.8rem; padding: 0.4rem 0.7rem; }
+    .bubble::after { right: 10px; }
   }
 
   .overlay {
@@ -242,6 +254,7 @@ class CloserClickSupport extends HTMLElement {
     window.removeEventListener('blur', this._onBlur)
     this._bubbleTimers.forEach(clearTimeout)
     this._bubbleTimers = []
+    clearTimeout(this._hoverHideTimer)
   }
 
   attributeChangedCallback() {
@@ -339,7 +352,7 @@ class CloserClickSupport extends HTMLElement {
       ? ''
       : inline
         ? `<button type="button" class="trigger ${variant}" part="trigger" title="${escapeAttr(hint)}" aria-label="${escapeAttr(hint)}">${escapeHtml(cta)}</button>`
-        : `<button type="button" class="trigger coin" part="trigger" title="${escapeAttr(hint)}" aria-label="${escapeAttr(hint)}"><img src="${escapeAttr(coinSrc)}" alt="" /></button>`
+        : `<button type="button" class="trigger coin" part="trigger" aria-label="${escapeAttr(hint)}"><img src="${escapeAttr(coinSrc)}" alt="" /></button>`
 
     const bubbleHtml = wantsBubble
       ? `<div class="bubble" part="bubble" role="status">${escapeHtml(hint)}</div>`
@@ -377,28 +390,50 @@ class CloserClickSupport extends HTMLElement {
     })
     this.shadowRoot.querySelector('.close').addEventListener('click', () => this.close())
 
-    // Burbuja "Apoya el Proyecto": aparece sola al cargar la página (una vez por
-    // carga), apuntando a la moneda. Clic en la burbuja también abre el modal.
+    // Burbuja "Apoya al proyecto": aparece sola al cargar (una vez por carga),
+    // y también con hover sobre la moneda. Clic en la burbuja abre el modal.
     const bubble = this.shadowRoot.querySelector('.bubble')
     if (bubble) {
       bubble.addEventListener('click', () => this.open())
+
+      // Hover: muestra la burbuja en lugar del tooltip nativo.
+      const enter = () => {
+        clearTimeout(this._hoverHideTimer)
+        this._bubbleTimers.forEach(clearTimeout)
+        this._bubbleTimers = []
+        this._showBubble()
+      }
+      const leave = () => {
+        clearTimeout(this._hoverHideTimer)
+        this._hoverHideTimer = setTimeout(() => this._hideBubble(), 250)
+      }
+      if (trigger) {
+        trigger.addEventListener('mouseenter', enter)
+        trigger.addEventListener('mouseleave', leave)
+      }
+      bubble.addEventListener('mouseenter', enter)
+      bubble.addEventListener('mouseleave', leave)
+
       if (!this._bubbleAutoShown) {
         this._bubbleAutoShown = true
         const timeout = parseInt(this.getAttribute('bubble-timeout') || '', 10)
         const hideAfter = Number.isFinite(timeout) ? timeout : 6000
         this._bubbleTimers.push(
-          setTimeout(() => {
-            this._bubbleVisible = true
-            bubble.classList.add('show')
-            // Se va si la ventana/página pierde el foco (blur).
-            window.addEventListener('blur', this._onBlur)
-          }, 700),
+          setTimeout(() => this._showBubble(), 700),
           setTimeout(() => this._hideBubble(), 700 + hideAfter),
         )
       } else if (this._bubbleVisible) {
         bubble.classList.add('show')
       }
     }
+  }
+
+  _showBubble() {
+    this._bubbleVisible = true
+    const bubble = this.shadowRoot.querySelector('.bubble')
+    if (bubble) bubble.classList.add('show')
+    // Se va si la ventana/página pierde el foco (blur).
+    window.addEventListener('blur', this._onBlur)
   }
 
   _hideBubble() {

@@ -88,13 +88,31 @@ results.coinIsImg = await page.evaluate(
   () => !!document.querySelector('#coin').shadowRoot.querySelector('.trigger.coin img'),
 )
 results.coinHint = await page.evaluate(
-  () => document.querySelector('#coin').shadowRoot.querySelector('.trigger.coin').getAttribute('title'),
+  () => document.querySelector('#coin').shadowRoot.querySelector('.trigger.coin').getAttribute('aria-label'),
 )
-results.coinFixed = await page.evaluate(() => {
-  const btn = document.querySelector('#coin').shadowRoot.querySelector('.trigger.coin')
-  const cs = getComputedStyle(btn)
-  return cs.position === 'fixed' && parseInt(cs.right) < 40 && parseInt(cs.top) < 40
+// integrado (no flotante): el botón no es fixed y el host es inline-block relativo
+results.coinIntegrated = await page.evaluate(() => {
+  const el = document.querySelector('#coin')
+  const btn = el.shadowRoot.querySelector('.trigger.coin')
+  const hostCs = getComputedStyle(el)
+  return getComputedStyle(btn).position !== 'fixed' && hostCs.display === 'inline-block' && hostCs.position === 'relative'
 })
+// la burbuja se posiciona respecto a la moneda (absolute, debajo)
+results.bubbleAnchored = await page.evaluate(
+  () => getComputedStyle(document.querySelector('#coin').shadowRoot.querySelector('.bubble')).position === 'absolute',
+)
+// hover sobre la moneda muestra la burbuja
+results.bubbleOnHover = await page.evaluate(async () => {
+  const el = document.querySelector('#coin')
+  el._hideBubble()
+  el.shadowRoot.querySelector('.trigger.coin').dispatchEvent(new MouseEvent('mouseenter'))
+  await new Promise((r) => setTimeout(r, 50))
+  return el.shadowRoot.querySelector('.bubble').classList.contains('show')
+})
+// la moneda ya no tiene title nativo (se usa la burbuja)
+results.coinNoTitle = await page.evaluate(
+  () => !document.querySelector('#coin').shadowRoot.querySelector('.trigger.coin').getAttribute('title'),
+)
 results.coinHasImage = await page.evaluate(
   () => (document.querySelector('#coin').shadowRoot.querySelector('.trigger.coin img').getAttribute('src') || '').startsWith('data:image/png;base64,'),
 )
@@ -152,7 +170,10 @@ const expect = {
   esHeading: 'Apoya al proyecto',
   coinIsImg: true,
   coinHint: 'Apoya al proyecto',
-  coinFixed: true,
+  coinIntegrated: true,
+  bubbleAnchored: true,
+  bubbleOnHover: true,
+  coinNoTitle: true,
   coinHasImage: true,
   bubbleText: 'Apoya al proyecto',
   bubbleAutoShown: true,
