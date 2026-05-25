@@ -39,7 +39,7 @@ const I18N = {
     cta: 'Apoyar',
     heading: 'Apoya al proyecto',
     message:
-      'Si esta herramienta te resulta útil, podés invitarme un café. Las apps del ecosistema Closer Click son gratuitas y autohosteadas. ¡Gracias!',
+      'Si esta herramienta te resulta útil, podés dar una pequeña contribución. Las apps del ecosistema Closer Click son gratuitas y autohosteadas. ¡Gracias!',
     close: 'Cerrar',
     defaultLink: 'Apoyar',
     hint: 'Apoya al proyecto',
@@ -48,7 +48,7 @@ const I18N = {
     cta: 'Support',
     heading: 'Support the project',
     message:
-      'If you find this tool useful, you can buy me a coffee. The Closer Click ecosystem apps are free and self-hosted. Thank you!',
+      'If you find this tool useful, you can make a small contribution. The Closer Click ecosystem apps are free and self-hosted. Thank you!',
     close: 'Close',
     defaultLink: 'Support',
     hint: 'Support the project',
