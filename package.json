@@ -1,0 +1,35 @@
+{
+  "name": "@gatoseya/closer-click-support",
+  "version": "0.1.0",
+  "description": "Web Component (custom element) de modal de soporte/donaciones reutilizable por cualquier app del ecosistema Closer Click. Autohosteado, sin JS de terceros ni cookies.",
+  "type": "module",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "types": "src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js"
+    }
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "closer-click",
+    "web-component",
+    "custom-element",
+    "support",
+    "donations",
+    "ko-fi",
+    "cross-app"
+  ],
+  "author": "seyacat",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seyacat/closer-click-support.git"
+  }
+}
