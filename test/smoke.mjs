@@ -99,7 +99,23 @@ results.coinHasImage = await page.evaluate(
   () => (document.querySelector('#coin').shadowRoot.querySelector('.trigger.coin img').getAttribute('src') || '').startsWith('data:image/png;base64,'),
 )
 
-// 7. evento cc-support-open
+// 7. burbuja "Apoya el Proyecto": existe, aparece sola y luego se oculta al abrir
+results.bubbleText = await page.evaluate(
+  () => document.querySelector('#coin').shadowRoot.querySelector('.bubble')?.textContent.trim(),
+)
+await page.waitForTimeout(1000)
+results.bubbleAutoShown = await page.evaluate(
+  () => document.querySelector('#coin').shadowRoot.querySelector('.bubble').classList.contains('show'),
+)
+results.bubbleHidesOnOpen = await page.evaluate(() => {
+  const el = document.querySelector('#coin')
+  el.open()
+  const hidden = !el.shadowRoot.querySelector('.bubble').classList.contains('show')
+  el.close()
+  return hidden
+})
+
+// 8. evento cc-support-open
 results.eventFired = await page.evaluate(
   () =>
     new Promise((resolve) => {
@@ -127,6 +143,9 @@ const expect = {
   coinHint: 'Apoya el Proyecto',
   coinFixed: true,
   coinHasImage: true,
+  bubbleText: 'Apoya el Proyecto',
+  bubbleAutoShown: true,
+  bubbleHidesOnOpen: true,
   eventFired: true,
 }
 

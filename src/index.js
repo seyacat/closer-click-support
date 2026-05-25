@@ -114,6 +114,42 @@ const STYLE = `
     .trigger.coin { width: 44px; height: 44px; top: 10px; right: 10px; }
   }
 
+  /* Burbuja de diálogo que apunta a la moneda (aparece sola al cargar) */
+  .bubble {
+    position: fixed;
+    top: 22px;
+    right: 78px;
+    z-index: 2147483000;
+    background: #3498db;
+    color: #fff;
+    padding: 0.5rem 0.85rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transform: translateX(10px) scale(0.96);
+    transform-origin: right center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    cursor: pointer;
+  }
+  .bubble.show { opacity: 1; transform: none; pointer-events: auto; }
+  .bubble::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -6px;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-right: 0;
+    border-left-color: #3498db;
+  }
+  @media (max-width: 480px) {
+    .bubble { top: 16px; right: 62px; font-size: 0.8rem; padding: 0.4rem 0.7rem; }
+  }
+
   .overlay {
     position: fixed;
     inset: 0;
@@ -184,13 +220,16 @@ const STYLE = `
 
 class CloserClickSupport extends HTMLElement {
   static get observedAttributes() {
-    return ['href', 'links', 'cta', 'no-trigger', 'heading', 'message', 'lang', 'variant', 'inline', 'hint', 'coin']
+    return ['href', 'links', 'cta', 'no-trigger', 'heading', 'message', 'lang', 'variant', 'inline', 'hint', 'coin', 'no-bubble', 'bubble-timeout']
   }
 
   constructor() {
     super()
     this.attachShadow({ mode: 'open' })
     this._onKeydown = this._onKeydown.bind(this)
+    this._bubbleTimers = []
+    this._bubbleAutoShown = false
+    this._bubbleVisible = false
   }
 
   connectedCallback() {
@@ -199,6 +238,8 @@ class CloserClickSupport extends HTMLElement {
 
   disconnectedCallback() {
     document.removeEventListener('keydown', this._onKeydown)
+    this._bubbleTimers.forEach(clearTimeout)
+    this._bubbleTimers = []
   }
 
   attributeChangedCallback() {
@@ -254,6 +295,9 @@ class CloserClickSupport extends HTMLElement {
   open() {
     const overlay = this.shadowRoot.querySelector('.overlay')
     if (!overlay) return
+    this._bubbleTimers.forEach(clearTimeout)
+    this._bubbleTimers = []
+    this._hideBubble()
     overlay.classList.add('open')
     document.addEventListener('keydown', this._onKeydown)
     this.dispatchEvent(new CustomEvent('cc-support-open', { bubbles: true, composed: true }))
@@ -286,11 +330,18 @@ class CloserClickSupport extends HTMLElement {
 
     // Trigger por defecto: moneda flotante arriba a la derecha (hint "Apoya el Proyecto").
     // Con `inline` se usa un botón de texto (cta/variant) en el flujo del documento.
+    // La burbuja solo acompaña a la moneda flotante (no al botón inline).
+    const wantsBubble = hasTrigger && !inline && !this.hasAttribute('no-bubble')
+
     const triggerHtml = !hasTrigger
       ? ''
       : inline
         ? `<button type="button" class="trigger ${variant}" part="trigger" title="${escapeAttr(hint)}" aria-label="${escapeAttr(hint)}">${escapeHtml(cta)}</button>`
         : `<button type="button" class="trigger coin" part="trigger" title="${escapeAttr(hint)}" aria-label="${escapeAttr(hint)}"><img src="${escapeAttr(coinSrc)}" alt="" /></button>`
+
+    const bubbleHtml = wantsBubble
+      ? `<div class="bubble" part="bubble" role="status">${escapeHtml(hint)}</div>`
+      : ''
 
     const linksHtml = links
       .map(
@@ -304,6 +355,7 @@ class CloserClickSupport extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>${STYLE}</style>
       ${triggerHtml}
+      ${bubbleHtml}
       <div class="overlay" role="dialog" aria-modal="true" aria-label="${escapeAttr(heading)}">
         <div class="modal" part="modal">
           <button type="button" class="close" aria-label="${escapeAttr(t.close)}">&times;</button>
@@ -322,6 +374,33 @@ class CloserClickSupport extends HTMLElement {
       if (e.target === overlay) this.close()
     })
     this.shadowRoot.querySelector('.close').addEventListener('click', () => this.close())
+
+    // Burbuja "Apoya el Proyecto": aparece sola al cargar la página (una vez por
+    // carga), apuntando a la moneda. Clic en la burbuja también abre el modal.
+    const bubble = this.shadowRoot.querySelector('.bubble')
+    if (bubble) {
+      bubble.addEventListener('click', () => this.open())
+      if (!this._bubbleAutoShown) {
+        this._bubbleAutoShown = true
+        const timeout = parseInt(this.getAttribute('bubble-timeout') || '', 10)
+        const hideAfter = Number.isFinite(timeout) ? timeout : 6000
+        this._bubbleTimers.push(
+          setTimeout(() => {
+            this._bubbleVisible = true
+            bubble.classList.add('show')
+          }, 700),
+          setTimeout(() => this._hideBubble(), 700 + hideAfter),
+        )
+      } else if (this._bubbleVisible) {
+        bubble.classList.add('show')
+      }
+    }
+  }
+
+  _hideBubble() {
+    this._bubbleVisible = false
+    const bubble = this.shadowRoot.querySelector('.bubble')
+    if (bubble) bubble.classList.remove('show')
   }
 }
 
