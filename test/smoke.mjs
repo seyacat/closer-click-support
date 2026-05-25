@@ -56,7 +56,7 @@ results.openWorks = await page.evaluate(() => {
   const el = document.querySelector('#auto')
   el.open()
   const ov = el.shadowRoot.querySelector('.overlay')
-  return ov.classList.contains('open')
+  return ov.open === true
 })
 results.linkCount = await page.evaluate(
   () => document.querySelector('#auto').shadowRoot.querySelectorAll('.link').length,
@@ -72,7 +72,7 @@ results.linkTarget = await page.evaluate(
 results.escCloses = await page.evaluate(async () => {
   const el = document.querySelector('#auto')
   document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
-  return !el.shadowRoot.querySelector('.overlay').classList.contains('open')
+  return !el.shadowRoot.querySelector('.overlay').open
 })
 
 // 5. no-trigger no renderiza botón + idioma ES
@@ -144,6 +144,16 @@ results.bubbleHidesOnBlur = await page.evaluate(async () => {
   return shown && hiddenAfter
 })
 
+// el modal se cierra con blur de la ventana
+results.modalClosesOnBlur = await page.evaluate(async () => {
+  const el = document.querySelector('#coin')
+  el.open()
+  const opened = el.shadowRoot.querySelector('.overlay').open === true
+  window.dispatchEvent(new Event('blur'))
+  await new Promise((r) => setTimeout(r, 30))
+  return opened && !el.shadowRoot.querySelector('.overlay').open
+})
+
 // 8. evento cc-support-open
 results.eventFired = await page.evaluate(
   () =>
@@ -179,6 +189,7 @@ const expect = {
   bubbleAutoShown: true,
   bubbleHidesOnOpen: true,
   bubbleHidesOnBlur: true,
+  modalClosesOnBlur: true,
   eventFired: true,
 }
 

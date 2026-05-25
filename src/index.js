@@ -162,21 +162,19 @@ const STYLE = `
     .bubble::after { right: 10px; }
   }
 
+  /* <dialog> con showModal(): se renderiza en el top layer, así el modal se
+     centra respecto a la página y NO queda contenido por el header/ancestros
+     con transform/filter donde esté integrada la moneda. */
   .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(3px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: none;
     padding: 1rem;
-    z-index: 2147483000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
+    background: transparent;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: visible;
+    color: #fff;
   }
-  .overlay.open { opacity: 1; pointer-events: auto; }
+  .overlay::backdrop { background: rgba(0, 0, 0, 0.55); backdrop-filter: blur(3px); }
 
   .modal {
     background: #1f2c3a;
@@ -188,11 +186,10 @@ const STYLE = `
     padding: 2rem 1.75rem 1.75rem;
     text-align: center;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    transform: translateY(12px) scale(0.98);
-    transition: transform 0.2s ease;
     position: relative;
   }
-  .overlay.open .modal { transform: none; }
+  .overlay[open] .modal { animation: cc-pop 0.2s ease; }
+  @keyframes cc-pop { from { transform: translateY(12px) scale(0.98); opacity: 0.4; } to { transform: none; opacity: 1; } }
 
   .close {
     position: absolute;
@@ -240,6 +237,7 @@ class CloserClickSupport extends HTMLElement {
     this.attachShadow({ mode: 'open' })
     this._onKeydown = this._onKeydown.bind(this)
     this._onBlur = () => this._hideBubble()
+    this._onModalBlur = () => this.close()
     this._bubbleTimers = []
     this._bubbleAutoShown = false
     this._bubbleVisible = false
@@ -252,6 +250,7 @@ class CloserClickSupport extends HTMLElement {
   disconnectedCallback() {
     document.removeEventListener('keydown', this._onKeydown)
     window.removeEventListener('blur', this._onBlur)
+    window.removeEventListener('blur', this._onModalBlur)
     this._bubbleTimers.forEach(clearTimeout)
     this._bubbleTimers = []
     clearTimeout(this._hoverHideTimer)
@@ -313,17 +312,27 @@ class CloserClickSupport extends HTMLElement {
     this._bubbleTimers.forEach(clearTimeout)
     this._bubbleTimers = []
     this._hideBubble()
-    overlay.classList.add('open')
+    if (typeof overlay.showModal === 'function') {
+      if (!overlay.open) overlay.showModal()
+    } else {
+      overlay.setAttribute('open', '') // fallback sin <dialog>
+    }
     document.addEventListener('keydown', this._onKeydown)
+    window.addEventListener('blur', this._onModalBlur)
     this.dispatchEvent(new CustomEvent('cc-support-open', { bubbles: true, composed: true }))
   }
 
   close() {
     const overlay = this.shadowRoot.querySelector('.overlay')
     if (!overlay) return
-    overlay.classList.remove('open')
     document.removeEventListener('keydown', this._onKeydown)
-    this.dispatchEvent(new CustomEvent('cc-support-close', { bubbles: true, composed: true }))
+    window.removeEventListener('blur', this._onModalBlur)
+    if (typeof overlay.close === 'function') {
+      if (overlay.open) overlay.close() // dispara 'close' -> emite cc-support-close
+    } else {
+      overlay.removeAttribute('open')
+      this.dispatchEvent(new CustomEvent('cc-support-close', { bubbles: true, composed: true }))
+    }
   }
 
   _onKeydown(e) {
@@ -371,23 +380,27 @@ class CloserClickSupport extends HTMLElement {
       <style>${STYLE}</style>
       ${triggerHtml}
       ${bubbleHtml}
-      <div class="overlay" role="dialog" aria-modal="true" aria-label="${escapeAttr(heading)}">
+      <dialog class="overlay" part="overlay" aria-label="${escapeAttr(heading)}">
         <div class="modal" part="modal">
           <button type="button" class="close" aria-label="${escapeAttr(t.close)}">&times;</button>
           <h2 class="heading">${escapeHtml(heading)}</h2>
           <p class="message">${escapeHtml(message)}</p>
           <div class="links">${linksHtml}</div>
         </div>
-      </div>
+      </dialog>
     `
 
     const trigger = this.shadowRoot.querySelector('.trigger')
     if (trigger) trigger.addEventListener('click', () => this.open())
 
     const overlay = this.shadowRoot.querySelector('.overlay')
+    // Clic en el backdrop (el propio <dialog>, fuera del .modal) cierra.
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) this.close()
     })
+    overlay.addEventListener('close', () =>
+      this.dispatchEvent(new CustomEvent('cc-support-close', { bubbles: true, composed: true })),
+    )
     this.shadowRoot.querySelector('.close').addEventListener('click', () => this.close())
 
     // Burbuja "Apoya al proyecto": aparece sola al cargar (una vez por carga),
