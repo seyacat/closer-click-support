@@ -15,9 +15,16 @@ nueva. No hay widget de terceros, ni pixel, ni tracking.
 
 El trigger por defecto es la **moneda dorada del ecosistema** (embebida como
 data-URI en el propio módulo — no hay que copiar ningún archivo) fija **arriba a
-la derecha** de la app, con el hint **"Apoya el Proyecto"**. Es la presentación
-estándar para **todas** las apps del ecosistema. Con el atributo `inline` se usa
-en su lugar un botón de texto en el flujo del documento.
+la derecha** de la app. Es la presentación estándar para **todas** las apps del
+ecosistema. Con el atributo `inline` se usa en su lugar un botón de texto en el
+flujo del documento.
+
+Al cargar la página aparece sola una **burbuja de diálogo "Apoya al proyecto"**
+apuntando a la moneda; se oculta a los ~6 s, al abrir el modal, o cuando la
+ventana pierde el foco (`blur`). Se desactiva con `no-bubble`.
+
+El texto de la moneda y la burbuja es **bilingüe es/en** automático (detecta
+`<html lang>` o el idioma del navegador; o pasale `lang="es"|"en"`).
 
 ## Instalación
 
@@ -61,8 +68,10 @@ import '@gatoseya/closer-click-support'
 | `href`       | URL de soporte única (p. ej. `https://ko-fi.com/usuario`). |
 | `links`      | JSON con uno o varios enlaces: `'[{"label":"Ko-fi","href":"…"},{"label":"PayPal","href":"…"}]'`. Tiene prioridad sobre `href`. |
 | `inline`     | Si está presente, usa botón de texto en el flujo en vez de la moneda flotante. |
-| `hint`       | Texto del tooltip/`title` del trigger. Default `"Apoya el Proyecto"` / `"Support the project"`. |
+| `hint`       | Texto del tooltip/`title` del trigger y de la burbuja. Default `"Apoya al proyecto"` / `"Support the project"`. |
 | `coin`       | URL de imagen para reemplazar la moneda por defecto. |
+| `no-bubble`  | Desactiva la burbuja de diálogo automática. |
+| `bubble-timeout` | Ms que la burbuja queda visible antes de ocultarse sola (default `6000`). |
 | `cta`        | Texto del botón disparador (solo modo `inline`). Default según idioma. |
 | `no-trigger` | Si está presente, no renderiza trigger; abrís el modal con `el.open()`. |
 | `heading`    | Título del modal (override). |
