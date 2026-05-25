@@ -37,12 +37,12 @@ import { COIN_DATA_URI } from './coin.js'
 const I18N = {
   es: {
     cta: 'Apoyar',
-    heading: 'Apoya el proyecto',
+    heading: 'Apoya al proyecto',
     message:
       'Si esta herramienta te resulta útil, podés invitarme un café. Las apps del ecosistema Closer Click son gratuitas y autohosteadas. ¡Gracias!',
     close: 'Cerrar',
     defaultLink: 'Apoyar',
-    hint: 'Apoya el Proyecto',
+    hint: 'Apoya al proyecto',
   },
   en: {
     cta: 'Support',
