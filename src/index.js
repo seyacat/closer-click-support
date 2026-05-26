@@ -46,6 +46,8 @@ const I18N = {
     shareHeading: 'Compartir',
     shareText: '¡Mira esto!',
     copied: '¡Enlace copiado!',
+    reportBug: 'Reporta un error',
+    discord: 'Canal de Soporte',
     share: {
       whatsapp: 'WhatsApp',
       x: 'X',
@@ -64,6 +66,8 @@ const I18N = {
     shareHeading: 'Share',
     shareText: 'Check this out!',
     copied: 'Link copied!',
+    reportBug: 'Report a bug',
+    discord: 'Support channel',
     share: {
       whatsapp: 'WhatsApp',
       x: 'X',
@@ -85,6 +89,14 @@ const SHARE_ICONS = {
   instagram:
     '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>',
 }
+
+// Icono de bug (SVG inline, sin JS de terceros). Hereda color con fill.
+const BUG_ICON =
+  '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 8h-2.81c-.45-.78-1.07-1.45-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12 5c-.49 0-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20V8zm-6 8h-4v-2h4v2zm0-4h-4v-2h4v2z"/></svg>'
+
+// Icono de Discord (SVG inline, sin JS de terceros). Hereda color con fill.
+const DISCORD_ICON =
+  '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>'
 
 const SHARE_COLORS = {
   whatsapp: '#25D366',
@@ -167,6 +179,18 @@ const STYLE = `
     93%  { transform: rotateY(180deg); }
     100% { transform: rotateY(360deg); }
   }
+  /* Con cara de bug habilitada: 3 caras (moneda → compartir → bug) repartidas
+     a 120° en el mismo plano; la animación se detiene en cada una. */
+  .flipper.three { animation-name: cc-flip3; }
+  @keyframes cc-flip3 {
+    0%   { transform: rotateY(0deg); }
+    27%  { transform: rotateY(0deg); }
+    36%  { transform: rotateY(-120deg); }
+    60%  { transform: rotateY(-120deg); }
+    69%  { transform: rotateY(-240deg); }
+    93%  { transform: rotateY(-240deg); }
+    100% { transform: rotateY(-360deg); }
+  }
   @media (prefers-reduced-motion: reduce) {
     .flipper { animation: none; }
   }
@@ -189,14 +213,15 @@ const STYLE = `
     object-fit: contain;
     pointer-events: none;
   }
-  .face.back {
-    transform: rotateY(180deg);
+  /* Caras con icono (compartir / bug). El transform de rotación va inline
+     porque depende de si hay 2 o 3 caras. */
+  .face.icon {
     background: #3498db;
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  .face.back svg {
+  .face.icon svg {
     width: 56%;
     height: 56%;
     color: #fff;
@@ -289,16 +314,20 @@ const STYLE = `
   }
   .close:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
 
-  .heading { font-size: 1.4rem; font-weight: 700; margin: 0 0 0.75rem; color: #3498db; }
+  .heading { font-size: 1.4rem; font-weight: 700; margin: 0 0 1.1rem; color: #3498db; }
   .message { font-size: 0.98rem; line-height: 1.6; margin: 0 0 1.5rem; opacity: 0.92; }
 
-  .links { display: flex; flex-direction: column; gap: 0.6rem; }
+  .links { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
   .link {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-width: 220px;
     text-decoration: none;
     font-weight: 600;
-    font-size: 1rem;
-    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    padding: 0.7rem 1.4rem;
     border-radius: 50px;
     background: #3498db;
     color: #fff;
@@ -306,6 +335,8 @@ const STYLE = `
     box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
   }
   .link:hover { background: #2980b9; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4); }
+  .link-ico { display: inline-flex; width: 1.4rem; height: 1.4rem; }
+  .link-ico img { width: 100%; height: 100%; display: block; object-fit: contain; }
 
   /* Sección de compartir */
   .share {
@@ -352,11 +383,65 @@ const STYLE = `
     transition: opacity 0.25s ease;
   }
   .share-copied.show { opacity: 1; }
+
+  /* Sección "Reporta un error": enlace discreto a los issues del repo */
+  .bug {
+    margin-top: 1.25rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .bug-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: color 0.2s ease;
+  }
+  .bug-link:hover { color: #fff; }
+  .bug-ico {
+    display: inline-flex;
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+  .bug-ico svg { width: 100%; height: 100%; display: block; }
+
+  /* Sección de comunidad/soporte: enlace a Discord (marca #5865F2) */
+  .discord {
+    margin-top: 1.25rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .discord-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-width: 220px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: 50px;
+    background: #5865f2;
+    color: #fff;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 15px rgba(88, 101, 242, 0.35);
+  }
+  .discord-link:hover {
+    background: #4752c4;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(88, 101, 242, 0.45);
+  }
+  .discord-ico { display: inline-flex; width: 1.4rem; height: 1.4rem; }
+  .discord-ico svg { width: 100%; height: 100%; display: block; }
 `
 
 class CloserClickSupport extends HTMLElement {
   static get observedAttributes() {
-    return ['href', 'links', 'cta', 'no-trigger', 'heading', 'message', 'lang', 'variant', 'inline', 'hint', 'coin', 'no-bubble', 'bubble-timeout', 'share-url', 'share-text', 'no-share']
+    return ['href', 'links', 'cta', 'no-trigger', 'heading', 'message', 'lang', 'variant', 'inline', 'hint', 'coin', 'no-bubble', 'bubble-timeout', 'share-url', 'share-text', 'no-share', 'repo', 'bug-href', 'discord']
   }
 
   constructor() {
@@ -444,6 +529,25 @@ class CloserClickSupport extends HTMLElement {
     } catch {
       return ''
     }
+  }
+
+  /* ---- reportar error ---- */
+  // URL a los issues del repositorio correspondiente. Se configura con:
+  //   bug-href="https://github.com/usuario/repo/issues"  (URL completa), o
+  //   repo="usuario/repo"  (atajo GitHub) o repo="https://github.com/usuario/repo".
+  get _bugHref() {
+    const explicit = this.getAttribute('bug-href')
+    if (explicit) return explicit.trim()
+    const repo = (this.getAttribute('repo') || '').trim()
+    if (!repo) return ''
+    if (/^https?:\/\//i.test(repo)) return repo.replace(/\/+$/, '') + '/issues'
+    return `https://github.com/${repo.replace(/^\/+|\/+$/g, '')}/issues`
+  }
+
+  /* ---- comunidad ---- */
+  // Enlace a Discord (u otra comunidad). Se configura con discord="https://discord.gg/...".
+  get _discordHref() {
+    return (this.getAttribute('discord') || '').trim()
   }
 
   get _shareText() {
@@ -548,17 +652,27 @@ class CloserClickSupport extends HTMLElement {
     const inline = this.hasAttribute('inline')
     const hasTrigger = !this.hasAttribute('no-trigger')
     const links = this._links
+    const bugHref = this._bugHref
+    const discordHref = this._discordHref
 
     // Trigger por defecto: moneda flotante arriba a la derecha (hint "Apoya el Proyecto").
     // Con `inline` se usa un botón de texto (cta/variant) en el flujo del documento.
     // La burbuja solo acompaña a la moneda flotante (no al botón inline).
     const wantsBubble = hasTrigger && !inline && !this.hasAttribute('no-bubble')
 
+    // Caras del flipper: moneda (front) + compartir, y bug si está configurado.
+    // Con 3 caras se reparten a 120°; con 2, la cara de compartir va a 180°.
+    const iconFaces = bugHref
+      ? `<span class="face icon" style="transform: rotateY(120deg)">${SHARE_ICONS.share}</span>` +
+        `<span class="face icon" style="transform: rotateY(240deg)">${BUG_ICON}</span>`
+      : `<span class="face icon" style="transform: rotateY(180deg)">${SHARE_ICONS.share}</span>`
+    const flipperClass = bugHref ? 'flipper three' : 'flipper'
+
     const triggerHtml = !hasTrigger
       ? ''
       : inline
         ? `<button type="button" class="trigger ${variant}" part="trigger" title="${escapeAttr(hint)}" aria-label="${escapeAttr(hint)}">${escapeHtml(cta)}</button>`
-        : `<button type="button" class="trigger coin" part="trigger" aria-label="${escapeAttr(hint)}"><span class="flipper"><span class="face front"><img src="${escapeAttr(coinSrc)}" alt="" /></span><span class="face back">${SHARE_ICONS.share}</span></span></button>`
+        : `<button type="button" class="trigger coin" part="trigger" aria-label="${escapeAttr(hint)}"><span class="${flipperClass}"><span class="face front"><img src="${escapeAttr(coinSrc)}" alt="" /></span>${iconFaces}</span></button>`
 
     const bubbleHtml = wantsBubble
       ? `<div class="bubble" part="bubble" role="status">${escapeHtml(hint)}</div>`
@@ -567,9 +681,9 @@ class CloserClickSupport extends HTMLElement {
     const linksHtml = links
       .map(
         (l) =>
-          `<a class="link" href="${escapeAttr(l.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(
-            l.label,
-          )}</a>`,
+          `<a class="link" href="${escapeAttr(l.href)}" target="_blank" rel="noopener noreferrer"><span class="link-ico"><img src="${escapeAttr(
+            coinSrc,
+          )}" alt="" /></span>${escapeHtml(l.label)}</a>`,
       )
       .join('')
 
@@ -588,6 +702,22 @@ class CloserClickSupport extends HTMLElement {
         </div>`
       : ''
 
+    const discordHtml = discordHref
+      ? `<div class="discord" part="discord">
+          <a class="discord-link" part="discord-link" href="${escapeAttr(discordHref)}" target="_blank" rel="noopener noreferrer">
+            <span class="discord-ico">${DISCORD_ICON}</span>${escapeHtml(t.discord)}
+          </a>
+        </div>`
+      : ''
+
+    const bugHtml = bugHref
+      ? `<div class="bug" part="bug">
+          <a class="bug-link" part="bug-link" href="${escapeAttr(bugHref)}" target="_blank" rel="noopener noreferrer">
+            <span class="bug-ico">${BUG_ICON}</span>${escapeHtml(t.reportBug)}
+          </a>
+        </div>`
+      : ''
+
     this.shadowRoot.innerHTML = `
       <style>${STYLE}</style>
       ${triggerHtml}
@@ -599,6 +729,8 @@ class CloserClickSupport extends HTMLElement {
           <p class="message">${escapeHtml(message)}</p>
           <div class="links">${linksHtml}</div>
           ${shareHtml}
+          ${discordHtml}
+          ${bugHtml}
         </div>
       </dialog>
     `

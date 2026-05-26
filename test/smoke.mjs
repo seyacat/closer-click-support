@@ -9,6 +9,7 @@ const html = `<!doctype html><html lang="en"><body>
 <closer-click-support id="auto" inline links='[{"label":"Ko-fi","href":"https://ko-fi.com/u"},{"href":"https://paypal.me/u"}]'></closer-click-support>
 <closer-click-support id="es" lang="es" href="https://ko-fi.com/u" no-trigger></closer-click-support>
 <closer-click-support id="coin" lang="es" href="https://ko-fi.com/seyacat"></closer-click-support>
+<closer-click-support id="bug" lang="es" href="https://ko-fi.com/seyacat" repo="seyacat/closerclick" discord="https://discord.gg/GGn6NXNQMp"></closer-click-support>
 <script type="module" src="/src/index.js"></script>
 </body></html>`
 
@@ -184,6 +185,41 @@ results.flipperAnimates = await page.evaluate(() => {
   return fl.offsetWidth > 0 && fl.offsetHeight > 0 && cs.animationName === 'cc-flip'
 })
 
+// 11. reportar error: con repo, el flipper tiene 3 caras (cc-flip3) y una cara
+// de bug; el modal muestra el enlace directo a los issues del repo.
+results.bugFlipperThree = await page.evaluate(() => {
+  const fl = document.querySelector('#bug').shadowRoot.querySelector('.flipper')
+  return fl.classList.contains('three') && getComputedStyle(fl).animationName === 'cc-flip3'
+})
+results.bugFaceCount = await page.evaluate(
+  () => document.querySelector('#bug').shadowRoot.querySelectorAll('.flipper .face').length,
+)
+results.bugLinkHref = await page.evaluate(
+  () => document.querySelector('#bug').shadowRoot.querySelector('.bug-link')?.getAttribute('href'),
+)
+results.bugLinkTarget = await page.evaluate(
+  () => document.querySelector('#bug').shadowRoot.querySelector('.bug-link')?.getAttribute('rel'),
+)
+results.bugLabel = await page.evaluate(
+  () => document.querySelector('#bug').shadowRoot.querySelector('.bug-link')?.textContent.trim(),
+)
+// sin repo/bug-href no hay sección bug ni cara extra (#coin sigue con 2 caras)
+results.noBugWhenUnset = await page.evaluate(() => {
+  const sr = document.querySelector('#coin').shadowRoot
+  return !sr.querySelector('.bug-link') && sr.querySelectorAll('.flipper .face').length === 2
+})
+
+// 12. comunidad: con discord, el modal muestra el enlace a Discord
+results.discordHref = await page.evaluate(
+  () => document.querySelector('#bug').shadowRoot.querySelector('.discord-link')?.getAttribute('href'),
+)
+results.discordLabel = await page.evaluate(
+  () => document.querySelector('#bug').shadowRoot.querySelector('.discord-link')?.textContent.trim(),
+)
+results.noDiscordWhenUnset = await page.evaluate(
+  () => !document.querySelector('#coin').shadowRoot.querySelector('.discord-link'),
+)
+
 await browser.close()
 server.close()
 
@@ -214,6 +250,15 @@ const expect = {
   flipperAnimates: true,
   modalClosesOnBlur: true,
   eventFired: true,
+  bugFlipperThree: true,
+  bugFaceCount: 3,
+  bugLinkHref: 'https://github.com/seyacat/closerclick/issues',
+  bugLinkTarget: 'noopener noreferrer',
+  bugLabel: 'Reporta un error',
+  noBugWhenUnset: true,
+  discordHref: 'https://discord.gg/GGn6NXNQMp',
+  discordLabel: 'Canal de Soporte',
+  noDiscordWhenUnset: true,
 }
 
 let ok = true

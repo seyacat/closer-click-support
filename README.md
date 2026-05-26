@@ -88,6 +88,9 @@ import '@gatoseya/closer-click-support'
 | `share-url`  | URL a compartir. Default: `window.location.href` (incluye el `#fragment`). |
 | `share-text` | Texto que acompaña al enlace al compartir. Default según idioma. |
 | `no-share`   | Desactiva la sección "Compartir" del modal. |
+| `repo`       | `usuario/repo` o URL del repo. Añade una cara de "bug" al flipper y una sección "Reporta un error" en el modal con enlace directo a los issues. |
+| `bug-href`   | URL completa a la página de issues (alternativa a `repo` si no sigue el patrón `…/issues`). |
+| `discord`    | URL de invitación a Discord (`https://discord.gg/…`). Añade una sección de comunidad al modal con enlace a Discord. |
 | `coin`       | URL de imagen para reemplazar la moneda por defecto. |
 | `no-bubble`  | Desactiva la burbuja de diálogo automática. |
 | `bubble-timeout` | Ms que la burbuja queda visible antes de ocultarse sola (default `6000`). |
