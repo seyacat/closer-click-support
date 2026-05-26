@@ -165,6 +165,25 @@ results.eventFired = await page.evaluate(
     }),
 )
 
+// 9. sección compartir: 4 redes; whatsapp lleva la URL actual; instagram copia
+results.shareCount = await page.evaluate(
+  () => document.querySelector('#coin').shadowRoot.querySelectorAll('.share-btn').length,
+)
+results.shareWhatsappHasUrl = await page.evaluate(() => {
+  const a = document.querySelector('#coin').shadowRoot.querySelector('.share-list a')
+  return (a.getAttribute('href') || '').includes(encodeURIComponent(location.href))
+})
+results.shareInstagramIsButton = await page.evaluate(
+  () => !!document.querySelector('#coin').shadowRoot.querySelector('.share-btn[data-share="instagram"]'),
+)
+
+// 10. la moneda rota: el .flipper tiene tamaño y la animación cc-flip aplicada
+results.flipperAnimates = await page.evaluate(() => {
+  const fl = document.querySelector('#coin').shadowRoot.querySelector('.flipper')
+  const cs = getComputedStyle(fl)
+  return fl.offsetWidth > 0 && fl.offsetHeight > 0 && cs.animationName === 'cc-flip'
+})
+
 await browser.close()
 server.close()
 
@@ -179,16 +198,20 @@ const expect = {
   noTrigger: true,
   esHeading: 'Apoya al proyecto',
   coinIsImg: true,
-  coinHint: 'Apoya al proyecto',
+  coinHint: 'Donar/Compartir',
   coinIntegrated: true,
   bubbleAnchored: true,
   bubbleOnHover: true,
   coinNoTitle: true,
   coinHasImage: true,
-  bubbleText: 'Apoya al proyecto',
+  bubbleText: 'Donar/Compartir',
   bubbleAutoShown: true,
   bubbleHidesOnOpen: true,
   bubbleHidesOnBlur: true,
+  shareCount: 4,
+  shareWhatsappHasUrl: true,
+  shareInstagramIsButton: true,
+  flipperAnimates: true,
   modalClosesOnBlur: true,
   eventFired: true,
 }

@@ -42,7 +42,16 @@ const I18N = {
       'Si esta herramienta te resulta útil, puedes dar una pequeña contribución. Las apps del ecosistema Closer Click son gratuitas y autohosteadas. ¡Gracias!',
     close: 'Cerrar',
     defaultLink: 'Donar',
-    hint: 'Apoya al proyecto',
+    hint: 'Donar/Compartir',
+    shareHeading: 'Compartir',
+    shareText: '¡Mira esto!',
+    copied: '¡Enlace copiado!',
+    share: {
+      whatsapp: 'WhatsApp',
+      x: 'X',
+      facebook: 'Facebook',
+      instagram: 'Instagram',
+    },
   },
   en: {
     cta: 'Support',
@@ -51,8 +60,37 @@ const I18N = {
       'If you find this tool useful, you can make a small contribution. The Closer Click ecosystem apps are free and self-hosted. Thank you!',
     close: 'Close',
     defaultLink: 'Donate',
-    hint: 'Support the project',
+    hint: 'Donate/Share',
+    shareHeading: 'Share',
+    shareText: 'Check this out!',
+    copied: 'Link copied!',
+    share: {
+      whatsapp: 'WhatsApp',
+      x: 'X',
+      facebook: 'Facebook',
+      instagram: 'Instagram',
+    },
   },
+}
+
+// Iconos de marca (SVG inline, sin JS de terceros). Heredan color con fill.
+const SHARE_ICONS = {
+  share:
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>',
+  whatsapp:
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.519 5.26l-.999 3.648 3.969-1.018zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>',
+  x: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
+  facebook:
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
+  instagram:
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>',
+}
+
+const SHARE_COLORS = {
+  whatsapp: '#25D366',
+  x: '#000000',
+  facebook: '#1877F2',
+  instagram: '#E4405F',
 }
 
 const STYLE = `
@@ -97,7 +135,8 @@ const STYLE = `
   }
   .trigger.ghost:hover { border-color: currentColor; }
 
-  /* Moneda: elemento integrado (no flotante). La app la ubica arriba a la derecha. */
+  /* Moneda: elemento integrado (no flotante). La app la ubica arriba a la derecha.
+     Tarjeta 3D que rota mostrando dos caras: moneda (donar) e icono de compartir. */
   .trigger.coin {
     display: block;
     padding: 0;
@@ -105,20 +144,62 @@ const STYLE = `
     height: 38px;
     border-radius: 50%;
     background: transparent;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+    border: none;
     line-height: 0;
+    perspective: 600px;
+    transition: transform 0.2s ease;
+  }
+  .trigger.coin:hover { transform: translateY(-1px) scale(1.08); }
+  .trigger.coin:hover .flipper { animation-play-state: paused; }
+
+  .flipper {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: cc-flip 7.2s ease-in-out infinite;
+  }
+  @keyframes cc-flip {
+    0%   { transform: rotateY(0deg); }
+    43%  { transform: rotateY(0deg); }
+    50%  { transform: rotateY(180deg); }
+    93%  { transform: rotateY(180deg); }
+    100% { transform: rotateY(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flipper { animation: none; }
+  }
+
+  .face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
   }
-  .trigger.coin:hover {
-    transform: translateY(-1px) scale(1.06) rotate(-6deg);
-    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.45);
-  }
-  .trigger.coin img {
+  .face.front img {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: contain;
+    pointer-events: none;
+  }
+  .face.back {
+    transform: rotateY(180deg);
+    background: #3498db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .face.back svg {
+    width: 56%;
+    height: 56%;
+    color: #fff;
     pointer-events: none;
   }
   @media (max-width: 480px) {
@@ -225,11 +306,57 @@ const STYLE = `
     box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
   }
   .link:hover { background: #2980b9; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4); }
+
+  /* Sección de compartir */
+  .share {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .share-heading {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0 0 0.9rem;
+    opacity: 0.92;
+  }
+  .share-list {
+    display: flex;
+    justify-content: center;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+  }
+  .share-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 0;
+  }
+  .share-btn:hover { transform: translateY(-3px); box-shadow: 0 7px 18px rgba(0, 0, 0, 0.4); }
+  .share-btn svg { width: 50%; height: 50%; }
+  .share-copied {
+    margin: 0.85rem 0 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #2ecc71;
+    height: 1.1rem;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .share-copied.show { opacity: 1; }
 `
 
 class CloserClickSupport extends HTMLElement {
   static get observedAttributes() {
-    return ['href', 'links', 'cta', 'no-trigger', 'heading', 'message', 'lang', 'variant', 'inline', 'hint', 'coin', 'no-bubble', 'bubble-timeout']
+    return ['href', 'links', 'cta', 'no-trigger', 'heading', 'message', 'lang', 'variant', 'inline', 'hint', 'coin', 'no-bubble', 'bubble-timeout', 'share-url', 'share-text', 'no-share']
   }
 
   constructor() {
@@ -254,6 +381,7 @@ class CloserClickSupport extends HTMLElement {
     this._bubbleTimers.forEach(clearTimeout)
     this._bubbleTimers = []
     clearTimeout(this._hoverHideTimer)
+    clearTimeout(this._copiedTimer)
   }
 
   attributeChangedCallback() {
@@ -303,6 +431,75 @@ class CloserClickSupport extends HTMLElement {
     } catch {
       return this._t.defaultLink
     }
+  }
+
+  /* ---- compartir ---- */
+  // URL a compartir: por defecto la URL completa de la página actual (incluye el
+  // #fragment con el contenido del usuario, que nunca llega al servidor).
+  get _shareUrl() {
+    const attr = this.getAttribute('share-url')
+    if (attr) return attr
+    try {
+      return window.location.href
+    } catch {
+      return ''
+    }
+  }
+
+  get _shareText() {
+    return this.getAttribute('share-text') || this._t.shareText
+  }
+
+  // Construye los enlaces de compartir para cada red. Instagram no admite
+  // compartir una URL por web, así que su acción copia el enlace al portapapeles.
+  _shareTargets() {
+    const url = this._shareUrl
+    const u = encodeURIComponent(url)
+    const text = encodeURIComponent(this._shareText)
+    return [
+      { key: 'whatsapp', href: `https://wa.me/?text=${text}%20${u}` },
+      { key: 'x', href: `https://twitter.com/intent/tweet?url=${u}&text=${text}` },
+      { key: 'facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
+      { key: 'instagram', href: null }, // copia al portapapeles
+    ]
+  }
+
+  _copyShareUrl() {
+    const url = this._shareUrl
+    const done = () => this._flashCopied()
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done, () => this._copyFallback(url, done))
+      } else {
+        this._copyFallback(url, done)
+      }
+    } catch {
+      this._copyFallback(url, done)
+    }
+  }
+
+  _copyFallback(text, done) {
+    try {
+      const ta = document.createElement('textarea')
+      ta.value = text
+      ta.style.position = 'fixed'
+      ta.style.opacity = '0'
+      document.body.appendChild(ta)
+      ta.select()
+      document.execCommand('copy')
+      document.body.removeChild(ta)
+      done()
+    } catch {
+      /* sin portapapeles disponible */
+    }
+  }
+
+  _flashCopied() {
+    const el = this.shadowRoot.querySelector('.share-copied')
+    if (!el) return
+    el.classList.add('show')
+    clearTimeout(this._copiedTimer)
+    this._copiedTimer = setTimeout(() => el.classList.remove('show'), 2000)
   }
 
   /* ---- API pública ---- */
@@ -361,7 +558,7 @@ class CloserClickSupport extends HTMLElement {
       ? ''
       : inline
         ? `<button type="button" class="trigger ${variant}" part="trigger" title="${escapeAttr(hint)}" aria-label="${escapeAttr(hint)}">${escapeHtml(cta)}</button>`
-        : `<button type="button" class="trigger coin" part="trigger" aria-label="${escapeAttr(hint)}"><img src="${escapeAttr(coinSrc)}" alt="" /></button>`
+        : `<button type="button" class="trigger coin" part="trigger" aria-label="${escapeAttr(hint)}"><span class="flipper"><span class="face front"><img src="${escapeAttr(coinSrc)}" alt="" /></span><span class="face back">${SHARE_ICONS.share}</span></span></button>`
 
     const bubbleHtml = wantsBubble
       ? `<div class="bubble" part="bubble" role="status">${escapeHtml(hint)}</div>`
@@ -376,6 +573,21 @@ class CloserClickSupport extends HTMLElement {
       )
       .join('')
 
+    const wantsShare = !this.hasAttribute('no-share')
+    const shareHtml = wantsShare
+      ? `<div class="share" part="share">
+          <p class="share-heading">${escapeHtml(t.shareHeading)}</p>
+          <div class="share-list">${this._shareTargets()
+            .map((s) =>
+              s.href
+                ? `<a class="share-btn" part="share-btn" href="${escapeAttr(s.href)}" target="_blank" rel="noopener noreferrer" style="background:${SHARE_COLORS[s.key]}" aria-label="${escapeAttr(t.share[s.key])}" title="${escapeAttr(t.share[s.key])}">${SHARE_ICONS[s.key]}</a>`
+                : `<button type="button" class="share-btn" part="share-btn" data-share="${s.key}" style="background:${SHARE_COLORS[s.key]}" aria-label="${escapeAttr(t.share[s.key])}" title="${escapeAttr(t.share[s.key])}">${SHARE_ICONS[s.key]}</button>`,
+            )
+            .join('')}</div>
+          <p class="share-copied" part="share-copied" role="status">${escapeHtml(t.copied)}</p>
+        </div>`
+      : ''
+
     this.shadowRoot.innerHTML = `
       <style>${STYLE}</style>
       ${triggerHtml}
@@ -386,6 +598,7 @@ class CloserClickSupport extends HTMLElement {
           <h2 class="heading">${escapeHtml(heading)}</h2>
           <p class="message">${escapeHtml(message)}</p>
           <div class="links">${linksHtml}</div>
+          ${shareHtml}
         </div>
       </dialog>
     `
@@ -402,6 +615,11 @@ class CloserClickSupport extends HTMLElement {
       this.dispatchEvent(new CustomEvent('cc-support-close', { bubbles: true, composed: true })),
     )
     this.shadowRoot.querySelector('.close').addEventListener('click', () => this.close())
+
+    // Compartir: el botón sin href (Instagram) copia el enlace al portapapeles.
+    this.shadowRoot.querySelectorAll('.share-btn[data-share]').forEach((btn) => {
+      btn.addEventListener('click', () => this._copyShareUrl())
+    })
 
     // Burbuja "Apoya al proyecto": aparece sola al cargar (una vez por carga),
     // y también con hover sobre la moneda. Clic en la burbuja abre el modal.

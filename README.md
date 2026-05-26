@@ -20,7 +20,19 @@ derecha**, dentro de la barra/header de la app (así no se monta sobre los menú
 Para apps sin barra superior, el atributo `floating` lo fija arriba a la derecha.
 Con `inline` se usa un botón de texto en lugar de la moneda.
 
-Al cargar la página aparece sola una **burbuja de diálogo "Apoya al proyecto"**
+La moneda es una **tarjeta 3D que rota en loop infinito**: muestra la cara de la
+moneda (donar) ~2 s, gira mostrando el **icono de compartir** ~2 s y vuelve a
+girar, indefinidamente. El hover pausa la rotación. (Respeta
+`prefers-reduced-motion`.)
+
+El modal incluye, además de los enlaces de donación, una sección **Compartir**
+con botones para **WhatsApp, X, Facebook e Instagram** que comparten la **URL
+actual de la página** (incluido el `#fragment`, que nunca llega al servidor).
+Como Instagram no admite compartir una URL por web, su botón **copia el enlace
+al portapapeles**. Personalizá la URL con `share-url` o el texto con `share-text`;
+desactivá la sección con `no-share`.
+
+Al cargar la página aparece sola una **burbuja de diálogo "Donar/Compartir"**
 debajo de la moneda (extendida a la izquierda, apuntando a ella). Se oculta a los
 ~6 s, al abrir el modal, o cuando la ventana pierde el foco (`blur`). Además,
 **el hover sobre la moneda vuelve a mostrar la burbuja** (en vez de un tooltip
@@ -72,7 +84,10 @@ import '@gatoseya/closer-click-support'
 | `links`      | JSON con uno o varios enlaces: `'[{"label":"Ko-fi","href":"…"},{"label":"PayPal","href":"…"}]'`. Tiene prioridad sobre `href`. |
 | `floating`   | Fija la moneda arriba a la derecha (`position:fixed`). Para apps sin barra superior. Por defecto es integrada en el flujo. |
 | `inline`     | Si está presente, usa botón de texto en el flujo en vez de la moneda. |
-| `hint`       | Texto del tooltip/`title` del trigger y de la burbuja. Default `"Apoya al proyecto"` / `"Support the project"`. |
+| `hint`       | Texto del tooltip/`title` del trigger y de la burbuja. Default `"Donar/Compartir"` / `"Donate/Share"`. |
+| `share-url`  | URL a compartir. Default: `window.location.href` (incluye el `#fragment`). |
+| `share-text` | Texto que acompaña al enlace al compartir. Default según idioma. |
+| `no-share`   | Desactiva la sección "Compartir" del modal. |
 | `coin`       | URL de imagen para reemplazar la moneda por defecto. |
 | `no-bubble`  | Desactiva la burbuja de diálogo automática. |
 | `bubble-timeout` | Ms que la burbuja queda visible antes de ocultarse sola (default `6000`). |
@@ -105,7 +120,8 @@ GitHub Sponsors) o cae al texto por defecto del idioma.
 ### Estilos
 
 El modal vive en Shadow DOM (aislado). Para retoques expone `part`s:
-`::part(trigger)` y `::part(modal)`.
+`::part(trigger)`, `::part(modal)`, `::part(bubble)`, `::part(share)`,
+`::part(share-btn)` y `::part(share-copied)`.
 
 ## Licencia
 
