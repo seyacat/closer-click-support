@@ -1,4 +1,4 @@
-# @gatoseya/closer-click-support
+# @closerclick/closer-click-support
 
 Web Component (`<closer-click-support>`) con un **modal de soporte/donaciones**
 reutilizable por **cualquier app del ecosistema Closer Click**: las hechas en
@@ -44,7 +44,7 @@ El texto de la moneda y la burbuja es **bilingüe es/en** automático (detecta
 ## Instalación
 
 ```bash
-npm install @gatoseya/closer-click-support
+npm install @closerclick/closer-click-support
 ```
 
 ## Uso
@@ -52,7 +52,7 @@ npm install @gatoseya/closer-click-support
 ### Vanilla (HTML/JS — qrshare, ecuavoley, padel…)
 
 ```html
-<script type="module" src="/node_modules/@gatoseya/closer-click-support/src/index.js"></script>
+<script type="module" src="/node_modules/@closerclick/closer-click-support/src/index.js"></script>
 
 <closer-click-support href="https://ko-fi.com/tuusuario"></closer-click-support>
 ```
@@ -61,7 +61,7 @@ npm install @gatoseya/closer-click-support
 
 ```js
 // en main.ts
-import '@gatoseya/closer-click-support'
+import '@closerclick/closer-click-support'
 ```
 
 ```vue

@@ -1,5 +1,5 @@
 /**
- * @gatoseya/closer-click-support
+ * @closerclick/closer-click-support
  *
  * Web Component (custom element) `<closer-click-support>` reutilizable por
  * CUALQUIER app del ecosistema Closer Click (Vue o vanilla), que muestra un
@@ -15,7 +15,7 @@
  *
  * Uso Vue 3 (el tag funciona tal cual; opcionalmente configurá
  * `isCustomElement` en compilerOptions si tu setup se queja):
- *   import '@gatoseya/closer-click-support'
+ *   import '@closerclick/closer-click-support'
  *   <closer-click-support href="https://ko-fi.com/usuario" lang="auto" />
  *
  * API:
