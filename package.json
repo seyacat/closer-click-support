@@ -1,6 +1,6 @@
 {
   "name": "@gatoseya/closer-click-support",
-  "version": "0.3.5",
+  "version": "0.3.7",
   "description": "Web Component (custom element) de modal de soporte/donaciones reutilizable por cualquier app del ecosistema Closer Click. Autohosteado, sin JS de terceros ni cookies.",
   "type": "module",
   "main": "src/index.js",

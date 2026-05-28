@@ -8,8 +8,8 @@ const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
 const html = `<!doctype html><html lang="en"><body>
 <closer-click-support id="auto" inline links='[{"label":"Ko-fi","href":"https://ko-fi.com/u"},{"href":"https://paypal.me/u"}]'></closer-click-support>
 <closer-click-support id="es" lang="es" href="https://ko-fi.com/u" no-trigger></closer-click-support>
-<closer-click-support id="coin" lang="es" href="https://ko-fi.com/seyacat"></closer-click-support>
-<closer-click-support id="bug" lang="es" href="https://ko-fi.com/seyacat" repo="seyacat/closerclick" discord="https://discord.gg/GGn6NXNQMp"></closer-click-support>
+<closer-click-support id="coin" lang="es" href="https://ko-fi.com/closerclick"></closer-click-support>
+<closer-click-support id="bug" lang="es" href="https://ko-fi.com/closerclick" repo="seyacat/closerclick" discord="https://discord.gg/D648uq7cth"></closer-click-support>
 <script type="module" src="/src/index.js"></script>
 </body></html>`
 
@@ -256,7 +256,7 @@ const expect = {
   bugLinkTarget: 'noopener noreferrer',
   bugLabel: 'Reporta un error',
   noBugWhenUnset: true,
-  discordHref: 'https://discord.gg/GGn6NXNQMp',
+  discordHref: 'https://discord.gg/D648uq7cth',
   discordLabel: 'Canal de Soporte',
   noDiscordWhenUnset: true,
 }
