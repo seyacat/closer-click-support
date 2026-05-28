@@ -9,7 +9,7 @@ const html = `<!doctype html><html lang="en"><body>
 <closer-click-support id="auto" inline links='[{"label":"Ko-fi","href":"https://ko-fi.com/u"},{"href":"https://paypal.me/u"}]'></closer-click-support>
 <closer-click-support id="es" lang="es" href="https://ko-fi.com/u" no-trigger></closer-click-support>
 <closer-click-support id="coin" lang="es" href="https://ko-fi.com/closerclick"></closer-click-support>
-<closer-click-support id="bug" lang="es" href="https://ko-fi.com/closerclick" repo="seyacat/closerclick" discord="https://discord.gg/D648uq7cth"></closer-click-support>
+<closer-click-support id="bug" lang="es" href="https://ko-fi.com/closerclick" repo="closerclick/closerclick" discord="https://discord.gg/D648uq7cth"></closer-click-support>
 <script type="module" src="/src/index.js"></script>
 </body></html>`
 
@@ -252,7 +252,7 @@ const expect = {
   eventFired: true,
   bugFlipperThree: true,
   bugFaceCount: 3,
-  bugLinkHref: 'https://github.com/seyacat/closerclick/issues',
+  bugLinkHref: 'https://github.com/closerclick/closerclick/issues',
   bugLinkTarget: 'noopener noreferrer',
   bugLabel: 'Reporta un error',
   noBugWhenUnset: true,
